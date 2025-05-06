@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Contador de Tiempo en Vivo</title>
+  <title>Contador con Zona Horaria</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     let intervalo;
@@ -10,15 +10,18 @@
     function iniciarContador() {
       clearInterval(intervalo);
       const fechaInput = document.getElementById("fecha").value;
-      const fechaUsuario = new Date(fechaInput);
+      const timezone = document.getElementById("zona").value;
 
-      if (isNaN(fechaUsuario)) {
-        alert("Fecha inválida. Usa el formato correcto.");
+      if (!fechaInput) {
+        alert("Por favor ingresa una fecha válida.");
         return;
       }
 
+      const fechaUTC = new Date(fechaInput);
+      const fechaUsuario = new Date(fechaUTC.toLocaleString("en-US", { timeZone: timezone }));
+
       intervalo = setInterval(() => {
-        const ahora = new Date();
+        const ahora = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
         const diferenciaMs = ahora - fechaUsuario;
 
         const segundos = Math.floor(diferenciaMs / 1000);
@@ -59,9 +62,23 @@
   <div class="max-w-4xl w-full p-6 bg-white rounded-xl shadow-lg">
     <h1 class="text-3xl font-bold text-center text-blue-700 mb-4">⏳ Contador de Tiempo en Vivo</h1>
     <div class="text-center">
-      <label for="fecha" class="text-gray-700">Selecciona la fecha y hora de inicio:</label><br>
-      <input type="datetime-local" id="fecha" class="mt-2 p-2 border rounded-lg shadow-sm">
-      <br><br>
+      <label class="text-gray-700 block mb-2">Selecciona fecha y hora:</label>
+      <input type="datetime-local" id="fecha" class="p-2 border rounded-lg shadow-sm mb-4">
+
+      <label class="text-gray-700 block mb-2">Selecciona la zona horaria:</label>
+      <select id="zona" class="p-2 border rounded-lg shadow-sm mb-4 w-full sm:w-1/2">
+        <option value="UTC">UTC</option>
+        <option value="America/Bogota">Colombia (Bogotá)</option>
+        <option value="America/Mexico_City">México</option>
+        <option value="America/Argentina/Buenos_Aires">Argentina</option>
+        <option value="America/Caracas">Venezuela</option>
+        <option value="America/New_York">EE.UU. (New York)</option>
+        <option value="Europe/Madrid">España</option>
+        <option value="Europe/London">Reino Unido</option>
+        <option value="Asia/Tokyo">Japón</option>
+        <option value="Asia/Shanghai">China</option>
+      </select><br>
+
       <button onclick="iniciarContador()" class="bg-blue-600 text-white px-6 py-2 rounded-full shadow hover:bg-blue-700 transition">
         Iniciar Contador
       </button>
