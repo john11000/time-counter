@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contador de Tiempo en Vivo</title>
+  <script>
+    let intervalo;
+
+    function iniciarContador() {
+      clearInterval(intervalo);
+      const fechaInput = document.getElementById("fecha").value;
+      const fechaUsuario = new Date(fechaInput);
+
+      if (isNaN(fechaUsuario)) {
+        alert("Fecha inválida. Usa el formato correcto.");
+        return;
+      }
+
+      intervalo = setInterval(() => {
+        const ahora = new Date();
+        const diferenciaMs = ahora - fechaUsuario;
+
+        const segundos = Math.floor(diferenciaMs / 1000);
+        const minutos = Math.floor(segundos / 60);
+        const horas = Math.floor(minutos / 60);
+        const dias = Math.floor(horas / 24);
+        const meses = Math.floor(dias / 30.44);
+        const años = Math.floor(dias / 365.25);
+        const decadas = Math.floor(años / 10);
+        const siglos = Math.floor(años / 100);
+
+        document.getElementById("resultado").innerHTML = `
+          <p>Segundos: ${segundos.toLocaleString()}</p>
+          <p>Minutos: ${minutos.toLocaleString()}</p>
+          <p>Horas: ${horas.toLocaleString()}</p>
+          <p>Días: ${dias.toLocaleString()}</p>
+          <p>Meses (aprox.): ${meses.toLocaleString()}</p>
+          <p>Años (aprox.): ${años.toLocaleString()}</p>
+          <p>Décadas: ${decadas.toLocaleString()}</p>
+          <p>Siglos: ${siglos.toLocaleString()}</p>
+        `;
+      }, 1000);
+    }
+  </script>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+  <h1>Contador de Tiempo en Vivo</h1>
+  <label for="fecha">Ingresa la fecha (formato: AAAA-MM-DDTHH:MM):</label><br>
+  <input type="datetime-local" id="fecha"><br><br>
+  <button onclick="iniciarContador()">Iniciar</button>
+
+  <div id="resultado" style="margin-top: 20px;"></div>
+</body>
+</html>
