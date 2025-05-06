@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Contador de Tiempo en Vivo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     let intervalo;
 
@@ -30,25 +31,42 @@
         const siglos = Math.floor(años / 100);
 
         document.getElementById("resultado").innerHTML = `
-          <p>Segundos: ${segundos.toLocaleString()}</p>
-          <p>Minutos: ${minutos.toLocaleString()}</p>
-          <p>Horas: ${horas.toLocaleString()}</p>
-          <p>Días: ${dias.toLocaleString()}</p>
-          <p>Meses (aprox.): ${meses.toLocaleString()}</p>
-          <p>Años (aprox.): ${años.toLocaleString()}</p>
-          <p>Décadas: ${decadas.toLocaleString()}</p>
-          <p>Siglos: ${siglos.toLocaleString()}</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+            ${crearTarjeta("Segundos", segundos)}
+            ${crearTarjeta("Minutos", minutos)}
+            ${crearTarjeta("Horas", horas)}
+            ${crearTarjeta("Días", dias)}
+            ${crearTarjeta("Meses (aprox.)", meses)}
+            ${crearTarjeta("Años (aprox.)", años)}
+            ${crearTarjeta("Décadas", decadas)}
+            ${crearTarjeta("Siglos", siglos)}
+          </div>
         `;
       }, 1000);
     }
+
+    function crearTarjeta(label, valor) {
+      return `
+        <div class="bg-white shadow-md rounded-xl p-4 text-center border border-gray-200 hover:shadow-lg transition">
+          <p class="text-xl font-semibold text-gray-800">${label}</p>
+          <p class="text-3xl font-bold text-blue-600 mt-2">${valor.toLocaleString()}</p>
+        </div>
+      `;
+    }
   </script>
 </head>
-<body style="font-family: sans-serif; padding: 20px;">
-  <h1>Contador de Tiempo en Vivo</h1>
-  <label for="fecha">Ingresa la fecha (formato: AAAA-MM-DDTHH:MM):</label><br>
-  <input type="datetime-local" id="fecha"><br><br>
-  <button onclick="iniciarContador()">Iniciar</button>
-
-  <div id="resultado" style="margin-top: 20px;"></div>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="max-w-4xl w-full p-6 bg-white rounded-xl shadow-lg">
+    <h1 class="text-3xl font-bold text-center text-blue-700 mb-4">⏳ Contador de Tiempo en Vivo</h1>
+    <div class="text-center">
+      <label for="fecha" class="text-gray-700">Selecciona la fecha y hora de inicio:</label><br>
+      <input type="datetime-local" id="fecha" class="mt-2 p-2 border rounded-lg shadow-sm">
+      <br><br>
+      <button onclick="iniciarContador()" class="bg-blue-600 text-white px-6 py-2 rounded-full shadow hover:bg-blue-700 transition">
+        Iniciar Contador
+      </button>
+    </div>
+    <div id="resultado"></div>
+  </div>
 </body>
 </html>
